@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">YandexHomework</string>
+    <string name="low_importance">Низкий</string>
+    <string name="normal_importance">Нет</string>
+    <string name="high_importance">Высокий</string>
+    <string name="my_items_title">Мои дела</string>
+    <string name="delete">Удалить</string>
+    <string name="do_until">Сделать до</string>
+    <string name="no">Нет</string>
+    <string name="importance">Важность</string>
+    <string name="what_left_to_do">Что надо сделать...</string>
+    <string name="save">CОХРАНИТЬ</string>
+    <string name="close">Close</string>
+    <string name="done">Выполнено</string>
+    <string name="add_new_item">Add new item</string>
+    <string name="show_hide_completed_items">show/hide completed items</string>
+    <string name="delete_item">delete item</string>
+    <string name="new_item">Новое</string>
+    <string-array name="importance_array">
+        <item>@string/low_importance</item>
+        <item>@string/normal_importance</item>
+        <item>@string/high_importance</item>
+    </string-array>
+
 </resources>
