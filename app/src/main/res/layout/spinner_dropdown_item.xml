@@ -6,4 +6,4 @@
     android:textSize="16sp"
     android:padding="16dp"
     android:background="@color/back_secondary"
-    android:textColor="@color/label_primary" /> <!-- Define your desired dropdown text color here -->
+    android:textColor="@color/label_primary" />

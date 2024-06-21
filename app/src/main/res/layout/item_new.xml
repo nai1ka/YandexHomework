@@ -5,17 +5,14 @@
     android:layout_height="wrap_content"
     android:paddingHorizontal="16dp"
     android:paddingVertical="12dp">
-
-    <!--TODO use style-->
     <TextView
         android:id="@+id/text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
-        android:lineHeight="20dp"
+        style="@style/TextStyle.Body"
         android:text="@string/new_item"
         android:textColor="@color/label_tertiary"
-        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

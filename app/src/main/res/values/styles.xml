@@ -8,17 +8,17 @@
 
     <style name="TextStyle.LargeTitle">
         <item name="android:textSize">32sp</item>
-        <item name="android:lineHeight">38dp</item> <!-- TODO dp or sp -->
+        <item name="android:lineHeight">38dp</item>
     </style>
 
     <style name="TextStyle.Title">
         <item name="android:textSize">20sp</item>
-        <item name="android:lineHeight">32dp</item> <!-- TODO dp or sp -->
+        <item name="android:lineHeight">32dp</item>
     </style>
 
     <style name="TextStyle.Button">
         <item name="android:textSize">14sp</item>
-        <item name="android:lineHeight">24dp</item> <!-- TODO dp or sp -->
+        <item name="android:lineHeight">24dp</item>
     </style>
 
     <style name="TextStyle.Body">
@@ -34,7 +34,6 @@
 
     <style name="TextStyle.Input">
         <item name="android:textSize">16sp</item>
-        <item name="android:background">@color/back_secondary</item>
         <item name="android:lineHeight">18dp</item>
     </style>
 
@@ -49,5 +48,12 @@
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/label_primary</item>
+    </style>
+
+    <style name="RoundedEditTextStyle" parent="TextStyle.Input">
+        <item name="android:background">@drawable/rounded_edittext</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:textColor">@color/label_primary</item>
+        <item name="android:textColorHint">@color/label_primary</item>
     </style>
 </resources>

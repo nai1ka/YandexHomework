@@ -9,9 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/exitButton"
@@ -21,7 +19,6 @@
             android:contentDescription="@string/close"
             android:src="@drawable/ic_close"
             app:tint="@color/label_primary" />
-
 
         <TextView
             android:id="@+id/saveButton"
@@ -39,21 +36,17 @@
 
     <EditText
         android:id="@+id/editText"
-        style="@style/TextStyle.Input"
+        style="@style/RoundedEditTextStyle"
         android:layout_width="0dp"
+        android:inputType="text"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:background="@drawable/rounded_edittext"
         android:gravity="top"
         android:hint="@string/what_left_to_do"
         android:minHeight="100dp"
-        android:padding="16dp"
-        android:textColor="@color/label_primary"
-        android:textColorHint="@color/label_primary"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
-
 
     <TextView
         android:id="@+id/textView"
@@ -119,7 +112,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="40dp"
-
         android:background="@color/support_separator"
         app:layout_constraintTop_toBottomOf="@+id/selectedDeadline" />
 

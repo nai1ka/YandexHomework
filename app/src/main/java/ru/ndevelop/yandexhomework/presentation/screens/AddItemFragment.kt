@@ -11,12 +11,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ru.ndevelop.yandexhomework.R
+import ru.ndevelop.yandexhomework.core.toStringDate
 import ru.ndevelop.yandexhomework.data.TodoItem
 import ru.ndevelop.yandexhomework.data.TodoItemImportance
-import ru.ndevelop.yandexhomework.data.TodoItemsRepository
 import ru.ndevelop.yandexhomework.databinding.FragmentAddItemBinding
 import ru.ndevelop.yandexhomework.presentation.viewmodels.ItemListViewModel
-import ru.ndevelop.yandexhomework.core.toStringDate
 import java.util.Calendar
 import java.util.Date
 
@@ -34,7 +33,7 @@ class AddItemFragment : Fragment(R.layout.fragment_add_item) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentAddItemBinding.inflate(inflater, container, false);
+        binding = FragmentAddItemBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -55,7 +54,7 @@ class AddItemFragment : Fragment(R.layout.fragment_add_item) {
         } else {
             binding.deadlineSwitch.isChecked = true
             selectedDeadline = todoItem.deadline
-            binding.selectedDeadline.text = selectedDeadline!!.toStringDate()
+            binding.selectedDeadline.text = selectedDeadline.toStringDate()
         }
     }
 
