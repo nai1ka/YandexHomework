@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/app_graph"
+    app:startDestination="@id/itemListFragment">
+
+    <fragment
+        android:id="@+id/itemListFragment"
+        android:name="ru.ndevelop.yandexhomework.presentation.screens.ItemListFragment"
+        android:label="ItemListFragment">
+        <action
+            android:id="@+id/action_itemListFragment_to_addItemFragment"
+            app:destination="@id/addItemFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addItemFragment"
+        android:name="ru.ndevelop.yandexhomework.presentation.screens.AddItemFragment"
+        android:label="AddItemFragment">
+        <argument
+            android:name="todoItem"
+            app:argType="ru.ndevelop.yandexhomework.data.TodoItem"
+            android:defaultValue="@null"
+            app:nullable="true" />
+    </fragment>
+</navigation>
