@@ -46,6 +46,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
@@ -59,14 +60,14 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import kotlinx.coroutines.launch
 import ru.ndevelop.yandexhomework.R
+import ru.ndevelop.yandexhomework.core.TodoItemImportance
 import ru.ndevelop.yandexhomework.core.toStringDate
 import ru.ndevelop.yandexhomework.data.LocalDataSourceImpl
 import ru.ndevelop.yandexhomework.data.RemoteDataSourceImpl
-import ru.ndevelop.yandexhomework.core.TodoItemImportance
 import ru.ndevelop.yandexhomework.data.TodoItemsRepository
+import ru.ndevelop.yandexhomework.presentation.UiEffect
 import ru.ndevelop.yandexhomework.presentation.theme.AppTheme
 import ru.ndevelop.yandexhomework.presentation.theme.Colors
-import ru.ndevelop.yandexhomework.presentation.UiEffect
 import ru.ndevelop.yandexhomework.presentation.viewmodels.AddItemViewModel
 
 class AddItemFragment : Fragment() {
@@ -170,8 +171,6 @@ fun AddItemScreen(
                 viewModel.deleteItem()
                 navController.navigateUp()
             }
-
-
         }
     }
 }
@@ -199,6 +198,7 @@ fun ItemDescriptionEditText(onItemNameChanged: (String) -> Unit, currentItemName
     OutlinedTextField(
         value = currentItemName,
         onValueChange = onItemNameChanged,
+        placeholder = { Text(text = stringResource(R.string.what_left_to_do)) },
         modifier = Modifier
             .fillMaxWidth()
             .defaultMinSize(minHeight = 100.dp)
@@ -215,7 +215,7 @@ fun ImportanceSelector(
     Column(modifier = Modifier.clickable {
         expanded = true
     }) {
-        Text(text = "Важность")
+        Text(text = "Важность", style = MaterialTheme.typography.bodyMedium)
         Text(text = selectedImportance.title, color = Color.Gray)
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             DropdownMenuItem(text = { Text(text = TodoItemImportance.LOW.title) }, onClick = {
@@ -250,7 +250,7 @@ fun DeadlineSelector(
     Column {
         Row {
             Column {
-                Text(text = "Сделать до")
+                Text(text = "Сделать до", style = MaterialTheme.typography.bodyMedium)
                 if (isExpanded) {
                     Text(
                         text = datePickerState.selectedDateMillis?.toStringDate("d MMMM") ?: "",
@@ -289,8 +289,10 @@ fun DeleteButton(isEnabled: Boolean, onClick: () -> Unit) {
             tint = if (isEnabled) Colors.Day.red else MaterialTheme.colorScheme.onSurfaceVariant,
             contentDescription = ""
         )
+        Spacer(modifier = Modifier.padding(4.dp))
         Text(
-            text = "Delete",
+            style = MaterialTheme.typography.titleSmall,
+            text = stringResource(id = R.string.delete),
             color = if (isEnabled) Colors.Day.red else MaterialTheme.colorScheme.onSurfaceVariant
         )
     }

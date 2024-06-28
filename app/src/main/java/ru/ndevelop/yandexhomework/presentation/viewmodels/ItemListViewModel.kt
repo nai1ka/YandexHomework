@@ -8,6 +8,7 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,9 +19,9 @@ import kotlinx.coroutines.launch
 import ru.ndevelop.yandexhomework.App
 import ru.ndevelop.yandexhomework.core.TodoItem
 import ru.ndevelop.yandexhomework.data.TodoItemsRepository
+import ru.ndevelop.yandexhomework.presentation.LceState
 import ru.ndevelop.yandexhomework.presentation.UiEffect
 import ru.ndevelop.yandexhomework.presentation.screens.itemList.ItemListUiState
-import ru.ndevelop.yandexhomework.presentation.LceState
 
 class ItemListViewModel(
     private val repository: TodoItemsRepository,
@@ -52,7 +53,7 @@ class ItemListViewModel(
             try {
                 repository.loadLocalData()
             } catch (e: Exception) {
-                _uiEffect.tryEmit(UiEffect.ShowError("Failed to load list of tasks"))
+                if (e !is CancellationException) _uiEffect.tryEmit(UiEffect.ShowError("Failed to load list of tasks"))
             }
             repository.dataStateFlow.collect {
                 val numberOfCompletedItems = it.count { item -> item.isCompleted }
@@ -84,7 +85,7 @@ class ItemListViewModel(
             try {
                 repository.deleteItem(item)
             } catch (e: Exception) {
-                _uiEffect.tryEmit(UiEffect.ShowError("Failed to delete item"))
+                if (e !is CancellationException) _uiEffect.tryEmit(UiEffect.ShowError("Failed to delete item"))
             }
         }
     }
@@ -94,7 +95,7 @@ class ItemListViewModel(
             try {
                 repository.updateItem(item.copy(isCompleted = isCompleted))
             } catch (e: Exception) {
-                _uiEffect.tryEmit(UiEffect.ShowError("Failed to update item"))
+                if (e !is CancellationException) _uiEffect.tryEmit(UiEffect.ShowError("Failed to update item"))
             }
         }
     }

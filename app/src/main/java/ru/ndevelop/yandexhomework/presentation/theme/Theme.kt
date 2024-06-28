@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -53,7 +54,7 @@ private val DarkColors = darkColorScheme(
 @Composable
 fun AppTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable() () -> Unit
+    content: @Composable () -> Unit
 ) {
     val colors = if (!useDarkTheme) {
         LightColors
@@ -64,7 +65,7 @@ fun AppTheme(
     MaterialTheme(
         colorScheme = colors,
         content = content,
-        typography = typography
+        typography = Typography
     )
 }
 
@@ -115,6 +116,23 @@ fun AppThemeLightPreview() {
 fun AppThemeDarkPreview() {
     AppTheme(useDarkTheme = true) {
         ThemePreviewContent(darkColorsToShow)
+    }
+}
+
+@Preview(showBackground = true, name = "Text styles")
+@Composable
+fun TextStylesPreview() {
+    AppTheme(useDarkTheme = false) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(30.dp),
+            modifier = Modifier.padding(20.dp)
+        ) {
+            Text("Large title - 32/38", style = MaterialTheme.typography.titleLarge)
+            Text("Title - 20/32", style = MaterialTheme.typography.titleMedium)
+            Text("BUTTON - 14/42", style = MaterialTheme.typography.titleSmall)
+            Text("Body - 16/20", style = MaterialTheme.typography.bodyMedium)
+            Text("Subhead - 14/20", style = MaterialTheme.typography.headlineSmall)
+        }
     }
 }
 

@@ -10,6 +10,7 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -65,7 +66,7 @@ class AddItemViewModel(
                 try {
                     todoItemsRepository.addItem(item)
                 } catch (e: Exception) {
-                    _uiEffect.tryEmit(UiEffect.ShowError("Failed to save item"))
+                    if (e !is CancellationException) _uiEffect.tryEmit(UiEffect.ShowError("Failed to save item"))
                 }
             }
 
@@ -84,7 +85,7 @@ class AddItemViewModel(
                 try {
                     todoItemsRepository.updateItem(item)
                 } catch (e: Exception) {
-                    _uiEffect.tryEmit(UiEffect.ShowError("Failed to update item"))
+                    if (e !is CancellationException) _uiEffect.tryEmit(UiEffect.ShowError("Failed to update item"))
                 }
             }
         }
@@ -111,7 +112,7 @@ class AddItemViewModel(
                 try {
                     todoItemsRepository.deleteItem(it)
                 } catch (e: Exception) {
-                    _uiEffect.tryEmit(UiEffect.ShowError("Failed to delete item"))
+                    if (e !is CancellationException) _uiEffect.tryEmit(UiEffect.ShowError("Failed to delete item"))
                 }
             }
         }
