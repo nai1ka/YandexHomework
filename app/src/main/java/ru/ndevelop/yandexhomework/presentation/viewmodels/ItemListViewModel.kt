@@ -1,65 +1,101 @@
 package ru.ndevelop.yandexhomework.presentation.viewmodels
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.ndevelop.yandexhomework.data.TodoItem
+import ru.ndevelop.yandexhomework.App
+import ru.ndevelop.yandexhomework.core.TodoItem
 import ru.ndevelop.yandexhomework.data.TodoItemsRepository
+import ru.ndevelop.yandexhomework.presentation.UiEffect
+import ru.ndevelop.yandexhomework.presentation.screens.itemList.ItemListUiState
+import ru.ndevelop.yandexhomework.presentation.LceState
 
-class ItemListViewModel : ViewModel() {
-    var numberOfCompletedItems: Int = 0
-    private val toDoItemRepository = TodoItemsRepository
-    private val _dataState = MutableStateFlow<List<TodoItem>>(emptyList())
+class ItemListViewModel(
+    private val repository: TodoItemsRepository,
+    private val savedStateHandle: SavedStateHandle
+) : ViewModel() {
 
-    var doneItemsVisible = false
+    var areCompletedItemsVisible: Boolean = false
         set(value) {
             field = value
-            fetchData()
+            if (_uiState.value.hasData()) {
+                _uiState.update { state ->
+                    LceState.Content(
+                        state.requireData().copy(
+                            items = itemList.filter { it.isCompleted == value || areCompletedItemsVisible })
+                    )
+                }
+            }
         }
 
-    val dataState: StateFlow<List<TodoItem>> = _dataState
+    private var itemList: List<TodoItem> = emptyList()
+    private val _uiState = MutableStateFlow<LceState<ItemListUiState>>(LceState.Loading)
+    val uiState: StateFlow<LceState<ItemListUiState>> = _uiState
+
+    private val _uiEffect = MutableSharedFlow<UiEffect>(replay = 0, extraBufferCapacity = 1)
+    val uiEffect: SharedFlow<UiEffect> = _uiEffect
 
     init {
-        fetchData()
-    }
-
-    private fun fetchData() {
-        viewModelScope.launch {
-            val allItems = toDoItemRepository.getLisOfItems()
-            val resultItems = if (!doneItemsVisible) allItems.filter { !it.isCompleted } else allItems
-
-            numberOfCompletedItems = allItems.count { it.isCompleted }
-            _dataState.value = resultItems
-
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                repository.loadLocalData()
+            } catch (e: Exception) {
+                _uiEffect.tryEmit(UiEffect.ShowError("Failed to load list of tasks"))
+            }
+            repository.dataStateFlow.collect {
+                val numberOfCompletedItems = it.count { item -> item.isCompleted }
+                itemList = it
+                _uiState.value = LceState.Content(
+                    ItemListUiState(
+                        items = itemList.filter { item -> item.isCompleted == areCompletedItemsVisible || areCompletedItemsVisible },
+                        numberOfCompletedItems = numberOfCompletedItems
+                    )
+                )
+            }
         }
     }
 
-    fun removeItem(todoItem: TodoItem) {
-        viewModelScope.launch {
-            toDoItemRepository.removeItem(todoItem)
-            fetchData()
+    companion object {
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val savedStateHandle = createSavedStateHandle()
+                val myRepository = (this[APPLICATION_KEY] as App).todoItemsRepository
+                ItemListViewModel(
+                    repository = myRepository, savedStateHandle = savedStateHandle
+                )
+            }
         }
     }
 
-    fun updateItem(todoItem: TodoItem) {
-        viewModelScope.launch {
-            toDoItemRepository.updateItem(todoItem)
-            fetchData()
-        }
-    }
-    fun addItem(todoItem: TodoItem) {
-        viewModelScope.launch {
-            toDoItemRepository.addNewItem(todoItem)
-            fetchData()
+    fun deleteItem(item: TodoItem) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                repository.deleteItem(item)
+            } catch (e: Exception) {
+                _uiEffect.tryEmit(UiEffect.ShowError("Failed to delete item"))
+            }
         }
     }
 
-    fun changeCompletedState(item: TodoItem, completed: Boolean) {
-        viewModelScope.launch {
-            toDoItemRepository.updateItem(item.copy(isCompleted = completed))
-            fetchData()
+    fun changeCompletedState(item: TodoItem, isCompleted: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                repository.updateItem(item.copy(isCompleted = isCompleted))
+            } catch (e: Exception) {
+                _uiEffect.tryEmit(UiEffect.ShowError("Failed to update item"))
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-package ru.ndevelop.yandexhomework.presentation.custom_views
+package ru.ndevelop.yandexhomework.presentation.custom
 
 import android.content.Context
 import android.util.AttributeSet

@@ -1,7 +1,6 @@
 package ru.ndevelop.yandexhomework.presentation
 
 
-
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import ru.ndevelop.yandexhomework.databinding.ActivityMainBinding
