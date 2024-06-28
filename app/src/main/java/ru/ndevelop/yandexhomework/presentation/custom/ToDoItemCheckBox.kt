@@ -1,4 +1,4 @@
-package ru.ndevelop.yandexhomework.presentation.custom_views
+package ru.ndevelop.yandexhomework.presentation.custom
 
 import android.content.Context
 import android.util.AttributeSet
@@ -6,7 +6,7 @@ import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.core.content.ContextCompat
 import ru.ndevelop.yandexhomework.R
 
-class CustomCheckBox @JvmOverloads constructor(
+class ToDoItemCheckBox @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -32,30 +32,32 @@ class CustomCheckBox @JvmOverloads constructor(
         }
     }
 
-    private fun updateUI() {
-        if (isChecked) {
+    private fun updateUI() = when {
+        isChecked -> {
             setBackgroundDrawable(
                 ContextCompat.getDrawable(
                     context,
                     R.drawable.ic_checkbox_checked
                 )
             )
-        } else {
-            if (isUrgent) {
-                setBackgroundDrawable(
-                    ContextCompat.getDrawable(
-                        context,
-                        R.drawable.ic_checkbox_urgent
-                    )
+        }
+
+        isUrgent -> {
+            setBackgroundDrawable(
+                ContextCompat.getDrawable(
+                    context,
+                    R.drawable.ic_checkbox_urgent
                 )
-            } else {
-                setBackgroundDrawable(
-                    ContextCompat.getDrawable(
-                        context,
-                        R.drawable.ic_checkbox_normal
-                    )
+            )
+        }
+
+        else -> {
+            setBackgroundDrawable(
+                ContextCompat.getDrawable(
+                    context,
+                    R.drawable.ic_checkbox_normal
                 )
-            }
+            )
         }
     }
 }

@@ -6,20 +6,24 @@
 
     <fragment
         android:id="@+id/itemListFragment"
-        android:name="ru.ndevelop.yandexhomework.presentation.screens.ItemListFragment"
+        android:name="ru.ndevelop.yandexhomework.presentation.screens.itemList.ItemListFragment"
         android:label="ItemListFragment">
         <action
             android:id="@+id/action_itemListFragment_to_addItemFragment"
-            app:destination="@id/addItemFragment" />
+            app:destination="@id/addItemFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/addItemFragment"
-        android:name="ru.ndevelop.yandexhomework.presentation.screens.AddItemFragment"
+        android:name="ru.ndevelop.yandexhomework.presentation.screens.addItem.AddItemFragment"
         android:label="AddItemFragment">
         <argument
             android:name="todoItem"
-            app:argType="ru.ndevelop.yandexhomework.data.TodoItem"
             android:defaultValue="@null"
+            app:argType="ru.ndevelop.yandexhomework.core.TodoItem"
             app:nullable="true" />
     </fragment>
 </navigation>

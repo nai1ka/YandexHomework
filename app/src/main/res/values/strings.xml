@@ -8,7 +8,7 @@
     <string name="do_until">Сделать до</string>
     <string name="no">Нет</string>
     <string name="importance">Важность</string>
-    <string name="what_left_to_do">Что надо сделать...</string>
+    <string name="what_left_to_do">Что надо сделать…</string>
     <string name="save">CОХРАНИТЬ</string>
     <string name="close">Close</string>
     <string name="done">Выполнено</string>
@@ -16,10 +16,12 @@
     <string name="show_hide_completed_items">show/hide completed items</string>
     <string name="delete_item">delete item</string>
     <string name="new_item">Новое</string>
+    <string name="label_completed">Выполнено - %1$d</string>
     <string-array name="importance_array">
         <item>@string/low_importance</item>
         <item>@string/normal_importance</item>
         <item>@string/high_importance</item>
     </string-array>
+
 
 </resources>

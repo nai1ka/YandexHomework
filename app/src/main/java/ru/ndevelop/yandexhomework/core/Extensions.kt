@@ -4,9 +4,9 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-fun Long.toStringDate(): String {
+fun Long.toStringDate(pattern: String = "d MMMM yyyy"): String {
     val locale = Locale("ru")
     val date = Date(this)
-    val format = SimpleDateFormat("d MMMM yyyy", locale)
+    val format = SimpleDateFormat(pattern, locale)
     return format.format(date)
 }
