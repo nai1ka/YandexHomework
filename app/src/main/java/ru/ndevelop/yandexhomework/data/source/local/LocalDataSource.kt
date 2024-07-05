@@ -1,7 +1,7 @@
-package ru.ndevelop.yandexhomework.data
+package ru.ndevelop.yandexhomework.data.source.local
 
 import kotlinx.coroutines.flow.Flow
-import ru.ndevelop.yandexhomework.core.TodoItem
+import ru.ndevelop.yandexhomework.core.models.TodoItem
 
 interface LocalDataSource {
     fun getData(): Flow<List<TodoItem>>

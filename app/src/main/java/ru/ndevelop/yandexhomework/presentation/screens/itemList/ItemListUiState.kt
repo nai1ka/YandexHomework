@@ -1,6 +1,6 @@
 package ru.ndevelop.yandexhomework.presentation.screens.itemList
 
-import ru.ndevelop.yandexhomework.core.TodoItem
+import ru.ndevelop.yandexhomework.core.models.TodoItem
 
 
 data class ItemListUiState(
