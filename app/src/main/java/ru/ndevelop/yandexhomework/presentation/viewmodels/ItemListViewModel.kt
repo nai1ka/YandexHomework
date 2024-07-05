@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import ru.ndevelop.yandexhomework.App
 import ru.ndevelop.yandexhomework.core.models.TodoItem
 import ru.ndevelop.yandexhomework.data.TodoItemsRepository
+import ru.ndevelop.yandexhomework.presentation.ErrorConsts
 import ru.ndevelop.yandexhomework.presentation.ItemListUiEffect
 import ru.ndevelop.yandexhomework.presentation.LceState
 import ru.ndevelop.yandexhomework.presentation.screens.itemList.ItemListUiState
@@ -99,7 +100,6 @@ class ItemListViewModel(
             } catch (e: Exception) {
                 if (e !is CancellationException) {
                     _uiState.emit(LceState.Error)
-                    _uiEffect.tryEmit(ItemListUiEffect.ShowError("Failed to load list of tasks"))
                 }
             }
         }
@@ -113,7 +113,7 @@ class ItemListViewModel(
             } catch (e: Exception) {
                 if (e !is CancellationException) _uiEffect.tryEmit(
                     ItemListUiEffect.ShowError(
-                        "Failed to delete item",
+                        ErrorConsts.DELETE_ERROR,
                         position
                     )
                 )
@@ -133,7 +133,7 @@ class ItemListViewModel(
                 } catch (e: Exception) {
                     if (e !is CancellationException) _uiEffect.tryEmit(
                         ItemListUiEffect.ShowError(
-                            "Failed to update item",
+                            ErrorConsts.UPDATE_ERROR,
                             position
                         )
                     )

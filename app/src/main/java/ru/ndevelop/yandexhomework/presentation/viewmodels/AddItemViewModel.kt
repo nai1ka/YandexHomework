@@ -24,6 +24,7 @@ import ru.ndevelop.yandexhomework.core.models.TodoItem
 import ru.ndevelop.yandexhomework.core.models.TodoItemImportance
 import ru.ndevelop.yandexhomework.data.TodoItemsRepository
 import ru.ndevelop.yandexhomework.presentation.AddItemUiEffect
+import ru.ndevelop.yandexhomework.presentation.ErrorConsts
 import ru.ndevelop.yandexhomework.presentation.screens.addItem.AddItemUiState
 import java.util.Locale
 
@@ -69,7 +70,11 @@ class AddItemViewModel(
                     todoItemsRepository.addItem(item)
                     _uiEffect.emit(AddItemUiEffect.GoBack)
                 } catch (e: Exception) {
-                    if (e !is CancellationException) _uiEffect.tryEmit(AddItemUiEffect.ShowError("Failed to save item"))
+                    if (e !is CancellationException) _uiEffect.tryEmit(
+                        AddItemUiEffect.ShowError(
+                            ErrorConsts.SAVE_ERROR
+                        )
+                    )
                 }
             }
 
@@ -89,7 +94,11 @@ class AddItemViewModel(
                     todoItemsRepository.updateItem(item)
                     _uiEffect.emit(AddItemUiEffect.GoBack)
                 } catch (e: Exception) {
-                    if (e !is CancellationException) _uiEffect.tryEmit(AddItemUiEffect.ShowError("Failed to update item"))
+                    if (e !is CancellationException) _uiEffect.tryEmit(
+                        AddItemUiEffect.ShowError(
+                            ErrorConsts.UPDATE_ERROR
+                        )
+                    )
                 }
             }
         }
@@ -119,7 +128,11 @@ class AddItemViewModel(
                     todoItemsRepository.deleteItem(it)
                     _uiEffect.emit(AddItemUiEffect.GoBack)
                 } catch (e: Exception) {
-                    if (e !is CancellationException) _uiEffect.tryEmit(AddItemUiEffect.ShowError("Failed to delete item"))
+                    if (e !is CancellationException) _uiEffect.tryEmit(
+                        AddItemUiEffect.ShowError(
+                            ErrorConsts.DELETE_ERROR
+                        )
+                    )
                 }
             }
         }
