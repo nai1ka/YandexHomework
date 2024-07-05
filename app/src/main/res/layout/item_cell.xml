@@ -6,7 +6,7 @@
     android:paddingHorizontal="16dp"
     android:paddingVertical="12dp">
 
-    <ru.ndevelop.yandexhomework.presentation.custom_views.CustomCheckBox
+    <ru.ndevelop.yandexhomework.presentation.custom.ToDoItemCheckBox
         android:id="@+id/checkBox"
         android:layout_width="24dp"
         android:layout_height="24dp"
