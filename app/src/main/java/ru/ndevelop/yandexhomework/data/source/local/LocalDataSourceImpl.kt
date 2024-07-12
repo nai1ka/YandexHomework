@@ -1,14 +1,14 @@
-package ru.ndevelop.yandexhomework.data
+package ru.ndevelop.yandexhomework.data.source.local
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import ru.ndevelop.yandexhomework.core.TodoItem
-import ru.ndevelop.yandexhomework.core.TodoItemImportance
+import ru.ndevelop.yandexhomework.core.models.TodoItem
+import ru.ndevelop.yandexhomework.core.models.TodoItemImportance
 import java.util.Date
 
 class LocalDataSourceImpl : LocalDataSource {
-    private var items = arrayListOf(
-        TodoItem(
+    private var items = mutableMapOf(
+        "1" to TodoItem(
             id = "1",
             text = "Купить что-то",
             importance = TodoItemImportance.LOW,
@@ -17,7 +17,7 @@ class LocalDataSourceImpl : LocalDataSource {
             creationDate = 0,
             updateDate = null
         ),
-        TodoItem(
+        "2" to TodoItem(
             id = "2",
             text = "Купить что-то, где-то, зачем-то, но зачем не очень понятно",
             importance = TodoItemImportance.NORMAL,
@@ -26,7 +26,7 @@ class LocalDataSourceImpl : LocalDataSource {
             creationDate = 0,
             updateDate = null
         ),
-        TodoItem(
+        "3" to TodoItem(
             id = "3",
             text = "Купить что-то, где-то, зачем-то, но зачем не очень понятно, но точно чтобы показать как обращаться",
             importance = TodoItemImportance.NORMAL,
@@ -35,7 +35,7 @@ class LocalDataSourceImpl : LocalDataSource {
             creationDate = 0,
             updateDate = null
         ),
-        TodoItem(
+        "4" to TodoItem(
             id = "4",
             text = "Купить что-то",
             importance = TodoItemImportance.HIGH,
@@ -45,7 +45,7 @@ class LocalDataSourceImpl : LocalDataSource {
             updateDate = null
 
         ),
-        TodoItem(
+        "5" to TodoItem(
             id = "5",
             text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
             importance = TodoItemImportance.LOW,
@@ -54,7 +54,7 @@ class LocalDataSourceImpl : LocalDataSource {
             creationDate = 0,
             updateDate = Date().time
         ),
-        TodoItem(
+        "6" to TodoItem(
             id = "6",
             text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus consequat aliquam ex, non molestie ligula viverra quis. Quisque in vestibulum nibh, ultrices condimentum eros.",
             importance = TodoItemImportance.NORMAL,
@@ -63,7 +63,7 @@ class LocalDataSourceImpl : LocalDataSource {
             creationDate = 0,
             updateDate = null
         ),
-        TodoItem(
+        "7" to TodoItem(
             id = "7",
             text = "Купить что-то",
             importance = TodoItemImportance.NORMAL,
@@ -72,7 +72,7 @@ class LocalDataSourceImpl : LocalDataSource {
             creationDate = 0,
             updateDate = null
         ),
-        TodoItem(
+        "8" to TodoItem(
             id = "8",
             text = "Купить что-то",
             importance = TodoItemImportance.NORMAL,
@@ -81,7 +81,7 @@ class LocalDataSourceImpl : LocalDataSource {
             creationDate = 0,
             updateDate = null
         ),
-        TodoItem(
+        "9" to TodoItem(
             id = "9",
             text = "Купить что-то",
             importance = TodoItemImportance.NORMAL,
@@ -90,7 +90,7 @@ class LocalDataSourceImpl : LocalDataSource {
             creationDate = 0,
             updateDate = null
         ),
-        TodoItem(
+        "10" to TodoItem(
             id = "10",
             text = "Купить что-то",
             importance = TodoItemImportance.NORMAL,
@@ -99,7 +99,7 @@ class LocalDataSourceImpl : LocalDataSource {
             creationDate = 0,
             updateDate = null
         ),
-        TodoItem(
+        "11" to TodoItem(
             id = "11",
             text = "Купить что-то",
             importance = TodoItemImportance.NORMAL,
@@ -108,7 +108,7 @@ class LocalDataSourceImpl : LocalDataSource {
             creationDate = 0,
             updateDate = null
         ),
-        TodoItem(
+        "12" to TodoItem(
             id = "12",
             text = "Купить что-то",
             importance = TodoItemImportance.NORMAL,
@@ -117,7 +117,7 @@ class LocalDataSourceImpl : LocalDataSource {
             creationDate = 0,
             updateDate = null
         ),
-        TodoItem(
+        "13" to TodoItem(
             id = "13",
             text = "Купить что-то",
             importance = TodoItemImportance.NORMAL,
@@ -131,24 +131,23 @@ class LocalDataSourceImpl : LocalDataSource {
 
     override fun getData(): Flow<List<TodoItem>> = dataFlow
     override suspend fun loadData() {
-        dataFlow.emit(items.toList())
+        dataFlow.emit(items.values.toList())
     }
 
     override suspend fun addItem(todoItem: TodoItem) {
-        items.add(todoItem)
-        dataFlow.emit(items.toList())
+        items[todoItem.id] = todoItem
+        dataFlow.emit(items.values.toList())
     }
 
     override suspend fun updateItem(todoItem: TodoItem) {
-        val index = items.indexOfFirst { it.id == todoItem.id }
-        if (index != -1) {
-            items[index] = todoItem
-            dataFlow.emit(items.toList())
-        }
+        items[todoItem.id] = todoItem
+        dataFlow.emit(items.values.toList())
     }
 
+
     override suspend fun deleteItem(todoItem: TodoItem) {
-        items.removeAll { it.id == todoItem.id }
-        dataFlow.emit(items.toList())
+        if (!items.contains(todoItem.id)) return
+        items.remove(todoItem.id)
+        dataFlow.emit(items.values.toList())
     }
 }

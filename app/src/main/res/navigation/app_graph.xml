@@ -23,7 +23,7 @@
         <argument
             android:name="todoItem"
             android:defaultValue="@null"
-            app:argType="ru.ndevelop.yandexhomework.core.TodoItem"
+            app:argType="ru.ndevelop.yandexhomework.core.models.TodoItem"
             app:nullable="true" />
     </fragment>
 </navigation>

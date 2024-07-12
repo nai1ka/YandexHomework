@@ -3,7 +3,7 @@ package ru.ndevelop.yandexhomework.presentation.screens.addItem
 import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SelectableDates
-import ru.ndevelop.yandexhomework.core.TodoItemImportance
+import ru.ndevelop.yandexhomework.core.models.TodoItemImportance
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Locale

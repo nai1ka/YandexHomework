@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-parcelize")
+    kotlin("plugin.serialization") version "1.9.22"
     id("androidx.navigation.safeargs.kotlin")
 }
 
@@ -45,6 +46,15 @@ android {
 }
 
 dependencies {
+    // Swipe-to-refresh
+    implementation(libs.androidx.swiperefreshlayout)
+
+
+    //Shimmer
+    implementation (libs.shimmer)
+
+    //WorkManager
+    implementation(libs.androidx.work.runtime)
 
     // Compose
     implementation(platform(libs.androidx.compose.bom))
@@ -53,6 +63,12 @@ dependencies {
     // Android Studio Preview support
     implementation(libs.androidx.ui.tooling.preview)
     debugImplementation(libs.androidx.ui.tooling)
+
+    // Network
+    implementation(libs.retrofit2.kotlinx.serialization.converter)
+    implementation(libs.retrofit)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.okhttp)
 
     // NavGraph
     implementation(libs.androidx.navigation.fragment.ktx)

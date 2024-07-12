@@ -2,7 +2,7 @@
     <string name="app_name">YandexHomework</string>
     <string name="low_importance">Низкий</string>
     <string name="normal_importance">Нет</string>
-    <string name="high_importance">Высокий</string>
+    <string name="high_importance">!! Высокий</string>
     <string name="my_items_title">Мои дела</string>
     <string name="delete">Удалить</string>
     <string name="do_until">Сделать до</string>
@@ -17,6 +17,9 @@
     <string name="delete_item">delete item</string>
     <string name="new_item">Новое</string>
     <string name="label_completed">Выполнено - %1$d</string>
+    <string name="no_internet">Нет соеденинения с интернетом</string>
+    <string name="loading_error">Ошибка загрузки</string>
+    <string name="retry">Повторить</string>
     <string-array name="importance_array">
         <item>@string/low_importance</item>
         <item>@string/normal_importance</item>

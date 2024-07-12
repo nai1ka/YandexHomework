@@ -1,4 +1,4 @@
-package ru.ndevelop.yandexhomework.core
+package ru.ndevelop.yandexhomework.core.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
@@ -15,6 +15,7 @@ data class TodoItem(
 ) : Parcelable
 
 
-enum class TodoItemImportance(val title: String) {
-    LOW("Низкий"), NORMAL("Нет"), HIGH("!! Высокий")
+enum class TodoItemImportance(val code: String) {
+    LOW("low"), NORMAL("basic"), HIGH("important")
 }
+

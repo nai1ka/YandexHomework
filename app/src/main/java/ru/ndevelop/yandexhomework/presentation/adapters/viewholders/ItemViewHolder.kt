@@ -4,8 +4,8 @@ import android.graphics.Paint
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import ru.ndevelop.yandexhomework.R
-import ru.ndevelop.yandexhomework.core.TodoItem
-import ru.ndevelop.yandexhomework.core.TodoItemImportance
+import ru.ndevelop.yandexhomework.core.models.TodoItem
+import ru.ndevelop.yandexhomework.core.models.TodoItemImportance
 import ru.ndevelop.yandexhomework.core.listeners.OnItemClickListener
 import ru.ndevelop.yandexhomework.core.toStringDate
 import ru.ndevelop.yandexhomework.databinding.ItemCellBinding

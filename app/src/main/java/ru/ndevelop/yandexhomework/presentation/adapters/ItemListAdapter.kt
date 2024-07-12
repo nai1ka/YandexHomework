@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ru.ndevelop.yandexhomework.core.TodoItem
+import ru.ndevelop.yandexhomework.core.models.TodoItem
 import ru.ndevelop.yandexhomework.core.listeners.OnItemClickListener
 import ru.ndevelop.yandexhomework.databinding.ItemCellBinding
 import ru.ndevelop.yandexhomework.databinding.ItemNewBinding
