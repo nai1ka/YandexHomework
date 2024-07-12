@@ -2,14 +2,9 @@ package ru.ndevelop.yandexhomework.presentation.viewmodels
 
 import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -19,7 +14,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.ndevelop.yandexhomework.App
 import ru.ndevelop.yandexhomework.core.models.TodoItem
 import ru.ndevelop.yandexhomework.core.models.TodoItemImportance
 import ru.ndevelop.yandexhomework.data.TodoItemsRepository
@@ -27,11 +21,11 @@ import ru.ndevelop.yandexhomework.presentation.AddItemUiEffect
 import ru.ndevelop.yandexhomework.presentation.ErrorConsts
 import ru.ndevelop.yandexhomework.presentation.screens.addItem.AddItemUiState
 import java.util.Locale
+import javax.inject.Inject
 
 @OptIn(ExperimentalMaterial3Api::class)
-class AddItemViewModel(
+class AddItemViewModel @Inject constructor(
     private val todoItemsRepository: TodoItemsRepository,
-    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private var todoItem: TodoItem? = null
@@ -68,14 +62,12 @@ class AddItemViewModel(
             viewModelScope.launch(Dispatchers.IO) {
                 try {
                     todoItemsRepository.addItem(item)
-                    _uiEffect.emit(AddItemUiEffect.GoBack)
+                } catch (cancel: CancellationException) {
+                    throw cancel
                 } catch (e: Exception) {
-                    if (e !is CancellationException) _uiEffect.tryEmit(
-                        AddItemUiEffect.ShowError(
-                            ErrorConsts.SAVE_ERROR
-                        )
-                    )
+                    _uiEffect.tryEmit(AddItemUiEffect.ShowError(ErrorConsts.SAVE_ERROR))
                 }
+                _uiEffect.emit(AddItemUiEffect.GoBack)
             }
 
         } else {
@@ -92,14 +84,16 @@ class AddItemViewModel(
             viewModelScope.launch(Dispatchers.IO) {
                 try {
                     todoItemsRepository.updateItem(item)
-                    _uiEffect.emit(AddItemUiEffect.GoBack)
+                } catch (cancel: CancellationException) {
+                    throw cancel
                 } catch (e: Exception) {
-                    if (e !is CancellationException) _uiEffect.tryEmit(
+                    _uiEffect.tryEmit(
                         AddItemUiEffect.ShowError(
                             ErrorConsts.UPDATE_ERROR
                         )
                     )
                 }
+                _uiEffect.emit(AddItemUiEffect.GoBack)
             }
         }
     }
@@ -143,15 +137,10 @@ class AddItemViewModel(
         _uiState.update { _uiState.value.copy(isDatePickerExpanded = isExpanded) }
     }
 
-    companion object {
-        val Factory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val savedStateHandle = createSavedStateHandle()
-                val myRepository = (this[APPLICATION_KEY] as App).todoItemsRepository
-                AddItemViewModel(
-                    todoItemsRepository = myRepository, savedStateHandle = savedStateHandle
-                )
-            }
-        }
+}
+
+class Factory<T : ViewModel>(private val create: () -> T) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return create.invoke() as T
     }
 }

@@ -40,8 +40,8 @@ fun TodoItem.toNetworkModel(deviceID: String): ItemResponseModel {
         text = text,
         done = isCompleted,
         createdAt = creationDate,
-        deadline = deadline ?: 0,
-        changedAt = updateDate ?: 0,
+        deadline = deadline,
+        changedAt = updateDate ?:0,
         lastUpdatedBy = deviceID,
         color = "white",
         importance = importance.code

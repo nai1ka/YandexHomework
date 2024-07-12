@@ -23,17 +23,22 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import kotlinx.coroutines.launch
-import ru.ndevelop.yandexhomework.core.api.RetrofitClient
+import ru.ndevelop.yandexhomework.appComponent
 import ru.ndevelop.yandexhomework.data.TodoItemsRepository
-import ru.ndevelop.yandexhomework.data.source.local.LocalDataSourceImpl
-import ru.ndevelop.yandexhomework.data.source.remote.RemoteDataSourceImpl
+import ru.ndevelop.yandexhomework.data.source.local.FakeLocalDataSource
+import ru.ndevelop.yandexhomework.data.source.remote.FakeRemoteDataSource
 import ru.ndevelop.yandexhomework.presentation.AddItemUiEffect
 import ru.ndevelop.yandexhomework.presentation.composables.AddItemScreen
 import ru.ndevelop.yandexhomework.presentation.theme.AppTheme
 import ru.ndevelop.yandexhomework.presentation.viewmodels.AddItemViewModel
+import ru.ndevelop.yandexhomework.presentation.viewmodels.Factory
 
 class AddItemFragment : Fragment() {
-    private val viewModel: AddItemViewModel by viewModels { AddItemViewModel.Factory }
+    private val viewModel: AddItemViewModel by viewModels {
+        Factory {
+            requireContext().appComponent().addItemViewModel
+        }
+    }
     private val args: AddItemFragmentArgs by navArgs()
     private val snackbarHostState = SnackbarHostState()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,10 +114,7 @@ fun AddItemScreenLightPreview() {
     ThemedPreview(darkTheme = false) {
         AddItemScreen(
             viewModel = AddItemViewModel(
-                TodoItemsRepository(
-                    RemoteDataSourceImpl(RetrofitClient.todoApi, ""),
-                    LocalDataSourceImpl()
-                ), SavedStateHandle()
+                TodoItemsRepository(FakeRemoteDataSource(), FakeLocalDataSource())
             ),
             navController = NavController(LocalContext.current),
             snackbarHostState = SnackbarHostState()
@@ -127,10 +129,7 @@ fun AddItemScreenDarkPreview() {
     ThemedPreview(darkTheme = true) {
         AddItemScreen(
             viewModel = AddItemViewModel(
-                TodoItemsRepository(
-                    RemoteDataSourceImpl(RetrofitClient.todoApi, ""),
-                    LocalDataSourceImpl()
-                ), SavedStateHandle()
+                TodoItemsRepository(FakeRemoteDataSource(), FakeLocalDataSource())
             ),
             navController = NavController(LocalContext.current),
             snackbarHostState = SnackbarHostState()

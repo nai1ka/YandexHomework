@@ -11,15 +11,5 @@ import ru.ndevelop.yandexhomework.core.ApiConsts
 
 
 object RetrofitClient {
-    private val client = OkHttpClient.Builder().addInterceptor(AuthHeaderInterceptor()).build()
-    private val json = Json {
-        ignoreUnknownKeys = true
-    }
-    private val retrofit: Retrofit = Retrofit.Builder().baseUrl(ApiConsts.BASE_URL).addConverterFactory(
-        json.asConverterFactory("application/json; charset=UTF8".toMediaType())
-    ).client(client).build()
-
-    val todoApi: TodoApi = retrofit.create(TodoApi::class.java)
-
     var knownRevision = 0
 }

@@ -1,18 +1,26 @@
 package ru.ndevelop.yandexhomework
 
 import android.app.Application
-import android.provider.Settings
-import ru.ndevelop.yandexhomework.core.api.RetrofitClient
-import ru.ndevelop.yandexhomework.data.TodoItemsRepository
-import ru.ndevelop.yandexhomework.data.source.local.LocalDataSourceImpl
-import ru.ndevelop.yandexhomework.data.source.remote.RemoteDataSourceImpl
+import android.content.Context
+import ru.ndevelop.yandexhomework.di.components.AppComponent
+import ru.ndevelop.yandexhomework.di.components.DaggerAppComponent
 
 class App : Application() {
-    val todoItemsRepository: TodoItemsRepository by lazy {
-        val deviceID = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
-        TodoItemsRepository(
-            remoteDataSource = RemoteDataSourceImpl(RetrofitClient.todoApi, deviceID),
-            localDataSource = LocalDataSourceImpl()
-        )
+    lateinit var appComponent: AppComponent
+    override fun onCreate() {
+        super.onCreate()
+        INSTANCE = this
+        appComponent = DaggerAppComponent.factory().create(this)
+    }
+
+    companion object {
+        internal lateinit var INSTANCE: App
+            private set
     }
 }
+
+fun Context.appComponent() =
+    when (this) {
+        is App -> appComponent
+        else -> (applicationContext as App).appComponent
+    }

@@ -6,10 +6,11 @@ import ru.ndevelop.yandexhomework.core.models.TodoItem
 import ru.ndevelop.yandexhomework.core.parseList
 import ru.ndevelop.yandexhomework.core.toNetworkModel
 import ru.ndevelop.yandexhomework.data.models.network.AddItemRequestModel
+import ru.ndevelop.yandexhomework.data.models.network.SynchronizeDataRequestModel
+import javax.inject.Inject
 
-class RemoteDataSourceImpl(
+class RemoteDataSourceImpl @Inject constructor(
     private val todoApi: TodoApi,
-    private val deviceID: String
 ) : RemoteDataSource {
 
     override suspend fun getListOfItems(): List<TodoItem> {
@@ -25,7 +26,7 @@ class RemoteDataSourceImpl(
 
     override suspend fun addItem(item: TodoItem, revision: Int) {
         val rawResult =
-            todoApi.addItem(AddItemRequestModel(item.toNetworkModel(deviceID)), revision)
+            todoApi.addItem(AddItemRequestModel(item.toNetworkModel("changeme")), revision)
         RetrofitClient.knownRevision = rawResult.revision
     }
 
@@ -33,9 +34,17 @@ class RemoteDataSourceImpl(
         val rawResult =
             todoApi.updateItem(
                 item.id,
-                AddItemRequestModel(item.toNetworkModel(deviceID)),
+                AddItemRequestModel(item.toNetworkModel("changeme")),
                 revision
             )
+        RetrofitClient.knownRevision = rawResult.revision
+    }
+
+    override suspend fun synchronizeData(items: List<TodoItem>, revision: Int) {
+        val rawResult = todoApi.synchronizeData(
+            SynchronizeDataRequestModel(items.map { it.toNetworkModel("changeme") }),
+            revision
+        )
         RetrofitClient.knownRevision = rawResult.revision
     }
 }

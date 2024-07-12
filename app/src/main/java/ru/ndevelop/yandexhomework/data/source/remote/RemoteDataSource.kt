@@ -10,4 +10,6 @@ interface RemoteDataSource {
     suspend fun addItem(item: TodoItem, revision: Int)
 
     suspend fun updateItem(item: TodoItem, revision: Int)
+
+    suspend fun synchronizeData(items: List<TodoItem>, revision: Int)
 }

@@ -10,17 +10,23 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import ru.ndevelop.yandexhomework.App
+import ru.ndevelop.yandexhomework.appComponent
 import ru.ndevelop.yandexhomework.core.FetchDataWorker
 import ru.ndevelop.yandexhomework.core.FetchDataWorkerFactory
 import ru.ndevelop.yandexhomework.databinding.ActivityMainBinding
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity(), Configuration.Provider {
 
     private lateinit var binding: ActivityMainBinding
 
+    @Inject
+    lateinit var workerFactory: FetchDataWorkerFactory
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        appComponent().inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -50,6 +56,6 @@ class MainActivity : AppCompatActivity(), Configuration.Provider {
 
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
-            .setWorkerFactory(FetchDataWorkerFactory((application as App).todoItemsRepository))
+            .setWorkerFactory(workerFactory)
             .build()
 }
