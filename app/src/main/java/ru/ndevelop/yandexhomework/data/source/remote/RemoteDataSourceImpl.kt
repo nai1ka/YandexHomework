@@ -24,25 +24,25 @@ class RemoteDataSourceImpl @Inject constructor(
         RetrofitClient.knownRevision = rawResult.revision
     }
 
-    override suspend fun addItem(item: TodoItem, revision: Int) {
+    override suspend fun addItem(item: TodoItem, revision: Int, deviceID: String) {
         val rawResult =
-            todoApi.addItem(AddItemRequestModel(item.toNetworkModel("changeme")), revision)
+            todoApi.addItem(AddItemRequestModel(item.toNetworkModel(deviceID)), revision)
         RetrofitClient.knownRevision = rawResult.revision
     }
 
-    override suspend fun updateItem(item: TodoItem, revision: Int) {
+    override suspend fun updateItem(item: TodoItem, revision: Int, deviceID: String) {
         val rawResult =
             todoApi.updateItem(
                 item.id,
-                AddItemRequestModel(item.toNetworkModel("changeme")),
+                AddItemRequestModel(item.toNetworkModel(deviceID)),
                 revision
             )
         RetrofitClient.knownRevision = rawResult.revision
     }
 
-    override suspend fun synchronizeData(items: List<TodoItem>, revision: Int) {
+    override suspend fun synchronizeData(items: List<TodoItem>, revision: Int, deviceID: String) {
         val rawResult = todoApi.synchronizeData(
-            SynchronizeDataRequestModel(items.map { it.toNetworkModel("changeme") }),
+            SynchronizeDataRequestModel(items.map { it.toNetworkModel(deviceID) }),
             revision
         )
         RetrofitClient.knownRevision = rawResult.revision

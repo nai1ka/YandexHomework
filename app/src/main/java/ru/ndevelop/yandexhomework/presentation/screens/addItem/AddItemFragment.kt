@@ -114,7 +114,7 @@ fun AddItemScreenLightPreview() {
     ThemedPreview(darkTheme = false) {
         AddItemScreen(
             viewModel = AddItemViewModel(
-                TodoItemsRepository(FakeRemoteDataSource(), FakeLocalDataSource())
+                TodoItemsRepository(FakeRemoteDataSource(), FakeLocalDataSource(),"")
             ),
             navController = NavController(LocalContext.current),
             snackbarHostState = SnackbarHostState()
@@ -129,7 +129,7 @@ fun AddItemScreenDarkPreview() {
     ThemedPreview(darkTheme = true) {
         AddItemScreen(
             viewModel = AddItemViewModel(
-                TodoItemsRepository(FakeRemoteDataSource(), FakeLocalDataSource())
+                TodoItemsRepository(FakeRemoteDataSource(), FakeLocalDataSource(),"")
             ),
             navController = NavController(LocalContext.current),
             snackbarHostState = SnackbarHostState()

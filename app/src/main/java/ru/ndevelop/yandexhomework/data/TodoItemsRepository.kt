@@ -12,9 +12,10 @@ import ru.ndevelop.yandexhomework.data.source.remote.RemoteDataSource
 import javax.inject.Inject
 
 
-class TodoItemsRepository @Inject constructor(
+class TodoItemsRepository constructor(
     private val remoteDataSource: RemoteDataSource,
-    private val localDataSource: LocalDataSource
+    private val localDataSource: LocalDataSource,
+    private val deviceID: String
 ) {
     private val _dataStateFlow = MutableSharedFlow<List<TodoItem>>(1)
     val dataStateFlow: SharedFlow<List<TodoItem>>
@@ -33,12 +34,12 @@ class TodoItemsRepository @Inject constructor(
 
     suspend fun addItem(item: TodoItem) {
         localDataSource.addItem(item)
-        remoteDataSource.addItem(item,RetrofitClient.knownRevision)
+        remoteDataSource.addItem(item,RetrofitClient.knownRevision,deviceID)
     }
 
     suspend fun synchronizeData() {
         val localData = localDataSource.getItems()
-        remoteDataSource.synchronizeData(localData, RetrofitClient.knownRevision)
+        remoteDataSource.synchronizeData(localData, RetrofitClient.knownRevision,deviceID)
     }
 
     suspend fun fetchFromNetwork(){
@@ -52,7 +53,7 @@ class TodoItemsRepository @Inject constructor(
 
     suspend fun updateItem(todoItem: TodoItem) {
         localDataSource.updateItem(todoItem)
-        remoteDataSource.updateItem(todoItem, RetrofitClient.knownRevision)
+        remoteDataSource.updateItem(todoItem, RetrofitClient.knownRevision,deviceID)
     }
 
 }

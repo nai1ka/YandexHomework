@@ -1,6 +1,8 @@
 package ru.ndevelop.yandexhomework.di.modules
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.provider.Settings
 import androidx.room.Room
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Binds
@@ -79,6 +81,21 @@ abstract class AppModule {
         @Provides
         fun provideFetchDataWorkerFactory(todoItemsRepository: TodoItemsRepository) =
             FetchDataWorkerFactory(todoItemsRepository)
+
+        @SuppressLint("HardwareIds")
+        @Singleton
+        @Provides
+        fun provideTodoItemsRepository(
+            remoteDataSource: RemoteDataSource,
+            localDataSource: LocalDataSource,
+            @ApplicationContext context: Context
+        ) = TodoItemsRepository(
+            remoteDataSource = remoteDataSource,
+            localDataSource = localDataSource,
+            deviceID = Settings.Secure.getString(
+                context.contentResolver, Settings.Secure.ANDROID_ID
+            )
+        )
     }
 
 }

@@ -1,13 +1,7 @@
 package ru.ndevelop.yandexhomework.presentation.viewmodels
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -16,7 +10,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.ndevelop.yandexhomework.App
 import ru.ndevelop.yandexhomework.core.models.TodoItem
 import ru.ndevelop.yandexhomework.data.TodoItemsRepository
 import ru.ndevelop.yandexhomework.presentation.ErrorConsts
@@ -79,17 +72,28 @@ class ItemListViewModel @Inject constructor(
             }
         }
     }
+
+    fun synchronizeItems() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                todoItemsRepository.synchronizeData()
+            } catch (cancel: CancellationException) {
+                throw cancel
+            } catch (e: Exception) {
+                _uiEffect.emit(ItemListUiEffect.ShowError(ErrorConsts.SYNC_ERROR))
+            }
+        }
+    }
+
     fun fetchItems() {
         viewModelScope.launch(Dispatchers.IO) {
             _uiState.emit(LceState.Loading)
             try {
                 todoItemsRepository.fetchFromNetwork()
-            }
-            catch (cancel: CancellationException) {
+            } catch (cancel: CancellationException) {
                 throw cancel
-            }
-            catch (e: Exception) {
-                _uiEffect.emit(ItemListUiEffect.ShowError("Ошибка загрузки данных"))
+            } catch (e: Exception) {
+                _uiEffect.emit(ItemListUiEffect.ShowError(ErrorConsts.LOAD_ERROR))
             }
         }
     }
@@ -118,12 +122,10 @@ class ItemListViewModel @Inject constructor(
                     todoItemsRepository.updateItem(item.copy(isCompleted = isCompleted))
                     updatedItems[indexOfItem] = item.copy(isCompleted = isCompleted)
                     itemList = updatedItems
-                }
-                catch (cancel: CancellationException) {
+                } catch (cancel: CancellationException) {
                     throw cancel
-                }
-                 catch (e: Exception) {
-                     _uiEffect.emit(ItemListUiEffect.ShowError(ErrorConsts.UPDATE_ERROR, position))
+                } catch (e: Exception) {
+                    _uiEffect.emit(ItemListUiEffect.ShowError(ErrorConsts.UPDATE_ERROR, position))
                 }
             }
         }

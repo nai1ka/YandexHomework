@@ -51,6 +51,7 @@ class ItemListFragment : Fragment() {
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
             super.onAvailable(network)
+            viewModel.synchronizeItems()
             viewModel.fetchItems()
         }
 
