@@ -95,6 +95,14 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+    implementation(libs.androidx.preference)
+
+    // DivKit
+    implementation(libs.div)
+    implementation(libs.div.core)
+    implementation(libs.div.json)
+    implementation(libs.glide)
+
 
     // Tests
     testImplementation(libs.junit)

@@ -37,13 +37,13 @@ fun ImportanceSelector(
         Text(text = title, color = Color.Gray)
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             DropdownMenuItem(
-                text = { Text(text = stringResource(id = R.string.low_importance)) },
+                text = { Text(text = stringResource(id = R.string.low_importance), style = MaterialTheme.typography.bodyMedium) },
                 onClick = {
                     onImportanceSelected(TodoItemImportance.LOW)
                     expanded = false
                 })
             DropdownMenuItem(
-                text = { Text(text = stringResource(id = R.string.normal_importance)) },
+                text = { Text(text = stringResource(id = R.string.normal_importance), style = MaterialTheme.typography.bodyMedium) },
                 onClick = {
                     onImportanceSelected(TodoItemImportance.NORMAL)
                     expanded = false
@@ -51,7 +51,8 @@ fun ImportanceSelector(
             DropdownMenuItem(text = {
                 Text(
                     text = stringResource(id = R.string.high_importance),
-                    color = Color.Red
+                    color = Color.Red,
+                    style = MaterialTheme.typography.bodyMedium
                 )
             },
                 onClick = {

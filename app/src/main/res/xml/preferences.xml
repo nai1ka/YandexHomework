@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Preference category with a title -->
+    <PreferenceCategory
+        android:title="Настройки темы">
+
+        <!-- ListPreference for theme selection -->
+        <ListPreference
+            android:key="theme_preference"
+            android:title="Тема приложения"
+            android:summary="Выберите тему приложения"
+            android:defaultValue="system"
+            android:entries="@array/theme_entries"
+            android:entryValues="@array/theme_values" />
+    </PreferenceCategory>
+</androidx.preference.PreferenceScreen>

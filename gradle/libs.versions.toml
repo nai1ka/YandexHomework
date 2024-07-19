@@ -1,10 +1,13 @@
 [versions]
 agp = "8.4.1"
 composeBom = "2024.06.00"
+divCore = "30.9.0"
+divJson = "30.9.0"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 dagger = "2.51"
+preference = "1.2.1"
 roomCommon = "2.6.1"
 junitVersion = "1.1.5"
 okhttp = "4.12.0"
@@ -25,6 +28,11 @@ jetbrainsKotlinJvm = "1.9.0"
 
 [libraries]
 agp = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+androidx-preference = { module = "androidx.preference:preference", version.ref = "preference" }
+div = { module = "com.yandex.div:div", version.ref = "divCore" }
+div-json = { module = "com.yandex.div:div-json", version.ref = "divJson" }
+div-core = { module = "com.yandex.div:div-core", version.ref = "divCore" }
+glide = { module = "com.yandex.div:glide", version.ref = "divCore" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

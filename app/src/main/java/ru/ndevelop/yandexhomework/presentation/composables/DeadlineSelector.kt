@@ -33,7 +33,8 @@ fun DeadlineSelector(
                 if (isExpanded) {
                     Text(
                         text = datePickerState.selectedDateMillis?.toStringDate("d MMMM") ?: "",
-                        color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 }
             }
