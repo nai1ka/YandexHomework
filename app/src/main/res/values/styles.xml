@@ -2,9 +2,7 @@
 <resources>
 
 
-    <style name="TextStyle">
-
-    </style>
+    <style name="TextStyle"></style>
 
     <style name="TextStyle.LargeTitle">
         <item name="android:textSize">32sp</item>

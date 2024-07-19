@@ -6,6 +6,9 @@ import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -115,9 +118,21 @@ class ItemListFragment : Fragment() {
 
     private fun setupUI() = with(binding) {
         collapsingToolbar.title = getString(R.string.my_items_title)
+        btnInfo.setOnClickListener {
+            val action = ItemListFragmentDirections.actionItemListFragmentToAboutAppFragment()
+            findNavController().navigate(action)
+        }
+
+        btnSettings.setOnClickListener {
+            val action = ItemListFragmentDirections.actionItemListFragmentToSettingsFragment()
+            findNavController().navigate(action)
+        }
+
+
         appBarLayout.addOnOffsetChangedListener { _, verticalOffset ->
             toolbarFrameLayout.isVisible = (verticalOffset == 0)
         }
+
 
         swiperefresh.setOnRefreshListener {
             viewModel.fetchItems()
@@ -219,6 +234,8 @@ class ItemListFragment : Fragment() {
         }
 
     }
+
+
 
     private fun handleEffect(effect: ItemListUiEffect) {
         when (effect) {

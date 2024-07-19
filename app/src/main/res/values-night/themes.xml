@@ -5,5 +5,8 @@
         <item name="android:windowBackground">@color/back_primary</item>
         <item name="colorSecondary">@color/back_secondary</item>
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:textColorPrimary">@color/label_primary</item>
+        <item name="android:textColorSecondary">@color/label_secondary</item>
+        <item name="android:textColorTertiary">@color/label_tertiary</item>
     </style>
 </resources>

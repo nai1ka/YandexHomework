@@ -14,6 +14,7 @@ import ru.ndevelop.yandexhomework.appComponent
 import ru.ndevelop.yandexhomework.core.FetchDataWorker
 import ru.ndevelop.yandexhomework.core.FetchDataWorkerFactory
 import ru.ndevelop.yandexhomework.databinding.ActivityMainBinding
+import ru.ndevelop.yandexhomework.presentation.screens.ThemeHelper
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity(), Configuration.Provider {
     lateinit var workerFactory: FetchDataWorkerFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        ThemeHelper.applyThemeFromPreferences(this)
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)

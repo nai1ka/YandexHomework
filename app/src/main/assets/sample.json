@@ -1,0 +1,149 @@
+{
+  "templates": {
+    "button": {
+      "type": "text",
+      "width": {
+        "type": "match_parent"
+      },
+      "height": {
+        "type": "wrap_content"
+      },
+      "paddings": {
+        "left": 24,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "margins": {
+        "left": 24,
+        "right": 24
+      },
+      "border": {
+        "corner_radius": 8
+      },
+      "background": [
+        {
+          "type": "solid",
+          "color": "#0E000000"
+        }
+      ],
+      "font_size": 14,
+      "font_weight": "medium",
+      "text_alignment_vertical": "center",
+      "text_alignment_horizontal": "center",
+      "text_color": "#000000"
+    }
+  },
+  "card": {
+    "log_id": "div2_sample_card",
+    "states": [
+      {
+        "state_id": 0,
+        "div": {
+          "height": {
+            "type": "match_parent"
+          },
+          "background": [
+            {
+              "type": "solid",
+              "color": "#FFFFFF"
+            }
+          ],
+          "type": "container",
+          "orientation": "vertical",
+          "items": [
+            {
+              "type": "state",
+              "id": "icon",
+              "default_state_id": "first",
+              "states": [
+                {
+                  "state_id": "first",
+                  "div": {
+                    "alignment_horizontal": "center",
+                    "type": "image",
+                    "tint_color": "#3c3ad6",
+                    "width": {
+                      "type": "fixed",
+                      "value": 96
+                    },
+                    "image_url": "https://static-00.iconduck.com/assets.00/todo-icon-1024x1024-7nszgsj6.png",
+                    "margins": {
+                      "top": 20,
+                      "right": 60,
+                      "bottom": 10,
+                      "left": 60
+                    },
+                    "actions": [
+                      {
+                        "log_id": "switch_state1",
+                        "url": "div-action://set_state?state_id=0/icon/second"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "state_id": "second",
+                  "div": {
+                    "alignment_horizontal": "center",
+                    "type": "image",
+                    "width": {
+                      "type": "fixed",
+                      "value": 96
+                    },
+                    "tint_color": "#44a852",
+                    "image_url": "https://static-00.iconduck.com/assets.00/todo-icon-1024x1024-7nszgsj6.png",
+                    "margins": {
+                      "top": 20,
+                      "right": 60,
+                      "bottom": 10,
+                      "left": 60
+                    },
+                    "actions": [
+                      {
+                        "log_id": "switch_state1",
+                        "url": "div-action://set_state?state_id=0/icon/first"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "font_size": 21,
+              "font_weight": "bold",
+              "margins": {
+                "bottom": 16,
+                "left": 20
+              },
+              "text_alignment_horizontal": "center",
+              "text": "О приложении"
+            },
+            {
+              "type": "text",
+              "font_size": 16,
+              "margins": {
+                "bottom": 16,
+                "left": 20,
+                "right": 20
+              },
+              "alignment_horizontal": "center",
+              "text": "Это приложение сделано в рамках ШМР Яндекс 2024"
+            },
+            {
+              "type": "button",
+              "text": "Вернуться назад",
+              "actions": [
+                {
+                  "log_id": "go_back",
+                  "url": "go-back://"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
