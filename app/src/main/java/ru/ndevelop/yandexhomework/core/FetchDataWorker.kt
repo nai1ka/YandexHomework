@@ -16,7 +16,7 @@ class FetchDataWorker(
 ) : CoroutineWorker(appContext, workerParams) {
     override suspend fun doWork(): Result {
         return try {
-            todoItemsRepository.fetchData()
+            todoItemsRepository.fetchFromNetwork()
             return Result.success()
         } catch (cancellationException: CancellationException) {
             throw cancellationException

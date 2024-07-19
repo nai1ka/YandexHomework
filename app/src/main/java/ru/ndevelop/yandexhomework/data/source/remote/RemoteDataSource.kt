@@ -7,7 +7,9 @@ interface RemoteDataSource {
 
     suspend fun deleteItem(id: String, revision: Int)
 
-    suspend fun addItem(item: TodoItem, revision: Int)
+    suspend fun addItem(item: TodoItem, revision: Int, deviceID: String)
 
-    suspend fun updateItem(item: TodoItem, revision: Int)
+    suspend fun updateItem(item: TodoItem, revision: Int,deviceID: String)
+
+    suspend fun synchronizeData(items: List<TodoItem>, revision: Int,deviceID: String)
 }

@@ -9,11 +9,13 @@ import ru.ndevelop.yandexhomework.core.models.TodoItem
 import ru.ndevelop.yandexhomework.core.api.RetrofitClient
 import ru.ndevelop.yandexhomework.data.source.local.LocalDataSource
 import ru.ndevelop.yandexhomework.data.source.remote.RemoteDataSource
+import javax.inject.Inject
 
 
-class TodoItemsRepository(
+class TodoItemsRepository constructor(
     private val remoteDataSource: RemoteDataSource,
-    private val localDataSource: LocalDataSource
+    private val localDataSource: LocalDataSource,
+    private val deviceID: String
 ) {
     private val _dataStateFlow = MutableSharedFlow<List<TodoItem>>(1)
     val dataStateFlow: SharedFlow<List<TodoItem>>
@@ -25,26 +27,33 @@ class TodoItemsRepository(
         }
     }
     private suspend fun subscribeToUpdates() {
-        localDataSource.getData().collect { data ->
+        localDataSource.getFlow().collect { data ->
             _dataStateFlow.emit(data)
         }
     }
 
     suspend fun addItem(item: TodoItem) {
-        remoteDataSource.addItem(item,RetrofitClient.knownRevision)
+        localDataSource.addItem(item)
+        remoteDataSource.addItem(item,RetrofitClient.knownRevision,deviceID)
     }
 
-    suspend fun fetchData() {
-        val data = remoteDataSource.getListOfItems()
-        _dataStateFlow.emit(data)
+    suspend fun synchronizeData() {
+        val localData = localDataSource.getItems()
+        remoteDataSource.synchronizeData(localData, RetrofitClient.knownRevision,deviceID)
+    }
+
+    suspend fun fetchFromNetwork(){
+        _dataStateFlow.emit(remoteDataSource.getListOfItems())
     }
 
     suspend fun deleteItem(todoItem: TodoItem) {
+        localDataSource.deleteItem(todoItem)
         remoteDataSource.deleteItem(todoItem.id,RetrofitClient.knownRevision)
     }
 
     suspend fun updateItem(todoItem: TodoItem) {
-        remoteDataSource.updateItem(todoItem, RetrofitClient.knownRevision)
+        localDataSource.updateItem(todoItem)
+        remoteDataSource.updateItem(todoItem, RetrofitClient.knownRevision,deviceID)
     }
 
 }

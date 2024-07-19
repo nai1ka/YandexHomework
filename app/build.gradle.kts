@@ -1,9 +1,10 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
+    id("android-app-convention")
+
     id("kotlin-parcelize")
     kotlin("plugin.serialization") version "1.9.22"
     id("androidx.navigation.safeargs.kotlin")
+    id("kotlin-kapt")
 }
 
 android {
@@ -77,6 +78,15 @@ dependencies {
     // Coroutines
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
+
+    // Dagger
+    kapt(libs.dagger.compiler)
+    implementation(libs.dagger)
+
+    // Room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    kapt(libs.androidx.room.compiler)
 
     // Viewmodel
     implementation(libs.androidx.lifecycle.viewmodel.ktx)

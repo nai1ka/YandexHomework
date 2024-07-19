@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class ItemResponseModel(
     @SerialName("last_updated_by")
     val lastUpdatedBy: String,
-    val deadline: Long?,
+    val deadline: Long? = null,
     @SerialName("changed_at")
     val changedAt: Long,
     @SerialName("created_at")

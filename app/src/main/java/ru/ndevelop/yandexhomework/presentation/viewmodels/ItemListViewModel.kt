@@ -1,13 +1,7 @@
 package ru.ndevelop.yandexhomework.presentation.viewmodels
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -16,17 +10,16 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.ndevelop.yandexhomework.App
 import ru.ndevelop.yandexhomework.core.models.TodoItem
 import ru.ndevelop.yandexhomework.data.TodoItemsRepository
 import ru.ndevelop.yandexhomework.presentation.ErrorConsts
 import ru.ndevelop.yandexhomework.presentation.ItemListUiEffect
 import ru.ndevelop.yandexhomework.presentation.LceState
 import ru.ndevelop.yandexhomework.presentation.screens.itemList.ItemListUiState
+import javax.inject.Inject
 
-class ItemListViewModel(
-    private val todoItemsRepository: TodoItemsRepository,
-    private val savedStateHandle: SavedStateHandle
+class ItemListViewModel @Inject constructor(
+    private val todoItemsRepository: TodoItemsRepository
 ) : ViewModel() {
 
     var areCompletedItemsVisible: Boolean = false
@@ -80,14 +73,14 @@ class ItemListViewModel(
         }
     }
 
-    companion object {
-        val Factory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val savedStateHandle = createSavedStateHandle()
-                val myRepository = (this[APPLICATION_KEY] as App).todoItemsRepository
-                ItemListViewModel(
-                    todoItemsRepository = myRepository, savedStateHandle = savedStateHandle
-                )
+    fun synchronizeItems() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                todoItemsRepository.synchronizeData()
+            } catch (cancel: CancellationException) {
+                throw cancel
+            } catch (e: Exception) {
+                _uiEffect.emit(ItemListUiEffect.ShowError(ErrorConsts.SYNC_ERROR))
             }
         }
     }
@@ -96,11 +89,11 @@ class ItemListViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             _uiState.emit(LceState.Loading)
             try {
-                todoItemsRepository.fetchData()
+                todoItemsRepository.fetchFromNetwork()
+            } catch (cancel: CancellationException) {
+                throw cancel
             } catch (e: Exception) {
-                if (e !is CancellationException) {
-                    _uiState.emit(LceState.Error)
-                }
+                _uiEffect.emit(ItemListUiEffect.ShowError(ErrorConsts.LOAD_ERROR))
             }
         }
     }
@@ -109,7 +102,6 @@ class ItemListViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 todoItemsRepository.deleteItem(item)
-                todoItemsRepository.fetchData()
             } catch (e: Exception) {
                 if (e !is CancellationException) _uiEffect.tryEmit(
                     ItemListUiEffect.ShowError(
@@ -130,13 +122,10 @@ class ItemListViewModel(
                     todoItemsRepository.updateItem(item.copy(isCompleted = isCompleted))
                     updatedItems[indexOfItem] = item.copy(isCompleted = isCompleted)
                     itemList = updatedItems
+                } catch (cancel: CancellationException) {
+                    throw cancel
                 } catch (e: Exception) {
-                    if (e !is CancellationException) _uiEffect.tryEmit(
-                        ItemListUiEffect.ShowError(
-                            ErrorConsts.UPDATE_ERROR,
-                            position
-                        )
-                    )
+                    _uiEffect.emit(ItemListUiEffect.ShowError(ErrorConsts.UPDATE_ERROR, position))
                 }
             }
         }

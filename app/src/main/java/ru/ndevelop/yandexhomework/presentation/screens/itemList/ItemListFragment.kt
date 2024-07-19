@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import ru.ndevelop.yandexhomework.R
+import ru.ndevelop.yandexhomework.appComponent
 import ru.ndevelop.yandexhomework.core.RecyclerTouchCallback
 import ru.ndevelop.yandexhomework.core.listeners.OnItemClickListener
 import ru.ndevelop.yandexhomework.core.listeners.OnItemSwipeListener
@@ -32,19 +33,25 @@ import ru.ndevelop.yandexhomework.presentation.LceState
 import ru.ndevelop.yandexhomework.presentation.adapters.ItemListAdapter
 import ru.ndevelop.yandexhomework.presentation.adapters.viewholders.AddNewItemHolder
 import ru.ndevelop.yandexhomework.presentation.screens.addItem.AddItemFragment
+import ru.ndevelop.yandexhomework.presentation.viewmodels.Factory
 import ru.ndevelop.yandexhomework.presentation.viewmodels.ItemListViewModel
 
 class ItemListFragment : Fragment() {
     private var _binding: FragmentItemsListBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: ItemListViewModel by viewModels { ItemListViewModel.Factory }
+    private val viewModel: ItemListViewModel by viewModels {
+        Factory {
+            requireContext().appComponent().itemListViewModel
+        }
+    }
     private val networkRequest =
         NetworkRequest.Builder().addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
             .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR).build()
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
             super.onAvailable(network)
+            viewModel.synchronizeItems()
             viewModel.fetchItems()
         }
 
